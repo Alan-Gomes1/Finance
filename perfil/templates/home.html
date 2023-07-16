@@ -58,7 +58,7 @@
                         {% for conta in contas %}
                             <div class="lista-conta">
                                 <span>{{ conta }}</span>
-                                <span class="total-conta">R$ 3.000,00</span>
+                                <span class="total-conta">R$ {{ conta.valor }}</span>
                             </div>
                             <br>
                         {% endfor %}

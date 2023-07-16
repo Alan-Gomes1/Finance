@@ -2,23 +2,23 @@ from typing import Any, Dict
 
 from django.contrib import messages
 from django.contrib.messages import constants
-from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
-from .models import Conta, Categoria
+from .models import Categoria, Conta
+from .utils import calcula_total
 
 
 class ListViewBase(ListView):
     model = Conta
     context_object_name = "contas"
-    total = Conta.objects.aggregate(valor=Sum("valor"))
+    total = calcula_total(Conta.objects.all(), "valor")
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         contexto = super().get_context_data(**kwargs)
-        contexto["total"] = self.total["valor"]
+        contexto["total"] = self.total
         contexto["categorias"] = Categoria.objects.all()
         return contexto
 
