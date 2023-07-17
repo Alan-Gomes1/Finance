@@ -1,10 +1,16 @@
+import os
 from datetime import datetime
+from io import BytesIO
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.http import FileResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views import View
+from weasyprint import HTML
 
 from perfil.models import Categoria, Conta
 
@@ -73,4 +79,16 @@ class ViewExtrato(View):
         )
 
 
+class ExportarPDF(View):
+    def get(self, request):
+        valores = Valores.objects.filter(data__month=datetime.now().month)
+        camino_template = os.path.join(
+            settings.BASE_DIR, 'templates/parcial/extrato.html'
+        )
+        template = render_to_string(camino_template, {"valores": valores})
 
+        path_output = BytesIO()
+        HTML(string=template).write_pdf(path_output)
+        path_output.seek(0)
+
+        return FileResponse(path_output, filename="extrato.pdf")
