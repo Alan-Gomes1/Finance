@@ -19,7 +19,10 @@ class Categoria(models.Model):
         return valores['total'] if valores['total'] else 0
 
     def percentual_gasto_por_categoria(self):
-        return int((self.total_gasto() * 100) / self.valor_planejamento)
+        try:
+            return int((self.total_gasto() * 100) / self.valor_planejamento)
+        except:
+            return 0
 
     def __str__(self) -> str:
         return self.categoria
