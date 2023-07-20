@@ -6,6 +6,10 @@
 
 }
 
+.card a {
+    margin-bottom: 5px;
+}
+
 .saldo{
     border-left: 2px solid var(--contrast-color);
     padding-left: 10px;
@@ -73,4 +77,9 @@
 .icone-setas{
     width: 50%;
     display: inline;
+}
+
+.progress-bar {
+    color: black;
+    font-weight: bold;
 }

@@ -1,25 +1,40 @@
+from datetime import datetime
 from typing import Any, Dict
 
 from django.contrib import messages
 from django.contrib.messages import constants
-from django.shortcuts import get_object_or_404, redirect
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
+from extrato.models import Valores
+
 from .models import Categoria, Conta
-from .utils import calcula_total
+from .utils import calcula_total, calcula_equilibrio_financeiro
 
 
 class ListViewBase(ListView):
     model = Conta
     context_object_name = "contas"
-    total = calcula_total(Conta.objects.all(), "valor")
+    total = calcula_total(Conta.objects.all())
+    valores = Valores.objects.filter(
+        data__month=datetime.now().month
+    )
+    entradas = valores.filter(tipo='E')
+    saidas = valores.filter(tipo='S')
+    total_essenciais, total_nao_essenciais = calcula_equilibrio_financeiro()
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         contexto = super().get_context_data(**kwargs)
         contexto["total"] = self.total
         contexto["categorias"] = Categoria.objects.all()
+        contexto['total_entradas'] = calcula_total(self.entradas)
+        contexto['total_saidas'] = calcula_total(self.saidas)
+        contexto['total_gastos_essenciais'] = int(self.total_essenciais)
+        contexto['total_gastos_nao_essenciais'] = int(self.total_nao_essenciais)  # noqa: E501
         return contexto
 
 
@@ -93,3 +108,19 @@ class UpdateCategoria(View):
         categoria.essencial = not categoria.essencial
         categoria.save()
         return redirect(reverse("gerenciar"))
+
+
+class Dashboard(View):
+    def get(self, request):
+        dados = {}
+        categorias = Categoria.objects.all()
+
+        for categoria in categorias:
+            dados[categoria.categoria] = Valores.objects.filter(
+                categoria=categoria
+            ).aggregate(total=Coalesce(Sum("valor"), 0.0))['total']
+
+        return render(
+            request, "dashboard.html",
+            {"labels": list(dados.keys()), "values": list(dados.values())}
+        )

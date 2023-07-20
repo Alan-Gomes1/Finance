@@ -21,7 +21,7 @@ class Categoria(models.Model):
     def percentual_gasto_por_categoria(self):
         try:
             return int((self.total_gasto() * 100) / self.valor_planejamento)
-        except:
+        except ZeroDivisionError:
             return 0
 
     def __str__(self) -> str:

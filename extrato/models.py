@@ -9,7 +9,7 @@ class Valores(models.Model):
         ('S', 'Saída')
     )
 
-    valor = models.FloatField()
+    valor = models.FloatField(default=0)
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     conta = models.ForeignKey(Conta, on_delete=models.DO_NOTHING)
     descricao = models.TextField()
