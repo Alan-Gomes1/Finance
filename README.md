@@ -1,7 +1,7 @@
 <h1 align="center"> Finance </h1>
 
 <p align="center">
-
+  O projeto "Finance" é uma aplicação desenvolvida utilizando o framework Django, que tem como objetivo fornecer uma solução para gestão financeira pessoal. O sistema permite que os usuários gerenciem suas finanças, controlando despesas, receitas e orçamentos.
 </p>
 
 <p align="center">
@@ -19,12 +19,12 @@
 
 ## Home
 <p align="center">
-  <img alt="" src="" width="100%">
+  <img alt="Página inicial" src="./media/home.png" width="100%">
 </p>
 
-
+## Contas
 <p align="center">
-  <img alt="" src="" width="100%">
+  <img alt="Página de cadastro e exibição das contas cadastradas" src="./media/contas.png" width="100%">
 </p>
 
 
