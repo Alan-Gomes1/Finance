@@ -17,19 +17,19 @@
 
 <br>
 
-## Home
+## Página inicial
 <p align="center">
   <img alt="Página inicial" src="./media/home.png" width="100%">
 </p>
 
 ## Contas
 <p align="center">
-  <img alt="Página de cadastro e exibição das contas cadastradas" src="./media/contas.png" width="100%">
+  <img alt="Página de cadastro e exibição das contas bancárias cadastradas" src="./media/contas.png" width="100%">
 </p>
 
-
+## Relatórios
 <p align="center">
-  <img alt="" src="" width="100%">
+  <img alt="Página de exibição das contas" src="./media/relatorios.png" width="100%">
 </p>
 
 ## 🚀 Tecnologias
