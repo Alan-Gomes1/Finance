@@ -18,6 +18,9 @@
 <br>
 
 ## Página inicial
+<p>
+  Controle de orçamentos: O sistema permite que os usuários estabeleçam orçamentos mensais ou semanais para categorias específicas de despesas, auxiliando-os a manter um controle mais efetivo dos gastos e a identificar onde podem economizar.
+</p>
 <p align="center">
   <img alt="Página inicial" src="./media/home.png" width="100%">
 </p>
