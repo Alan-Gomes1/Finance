@@ -26,6 +26,9 @@
 </p>
 
 ## Contas
+<p>
+  Registro de despesas e receitas: Os usuários podem adicionar, editar e excluir despesas e receitas em categorias definidas, como alimentação, moradia, transporte, salário, entre outras. Cada registro pode conter informações como valor, dados, descrição e categoria.
+</p>
 <p align="center">
   <img alt="Página de cadastro e exibição das contas bancárias cadastradas" src="./media/contas.png" width="100%">
 </p>
