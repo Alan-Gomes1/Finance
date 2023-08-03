@@ -34,6 +34,9 @@
 </p>
 
 ## Relatórios
+<p>
+  Relatórios e gráficos: O projeto oferece recursos de geração de relatórios e gráficos para visualizar as despesas e receitas ao longo do tempo. Essas visualizações podem ajudar os usuários a analisar seus hábitos financeiros e identificar padrões de gastos.
+</p>
 <p align="center">
   <img alt="Página de exibição das contas" src="./media/relatorios.png" width="100%">
 </p>
@@ -43,7 +46,7 @@
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - HTML, CSS
-- Python, Django
+- Python, Django, Pytest
 - Git, figma
 
 ## 💻 Projeto
