@@ -50,7 +50,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - Git, figma
 
 ## 💻 Projeto
-
+O projeto "Finance" foi desenvolvido com foco na simplicidade, usabilidade e segurança. Ele oferece uma solução prática para que os usuários possam acompanhar suas finanças de forma organizada e eficiente. 
 
 ## 🔖 Layout
 
