@@ -64,3 +64,9 @@ class TestCadastrarBanco(TestCase):
         dados = self.dados_banco()
         response = self.client.get(reverse('cadastrar_banco'), dados)
         self.assertEqual(response.status_code, 405)
+
+    def test_view_CadastrarBanco_mensagem_de_sucesso(self):
+        dados = self.dados_banco()
+        response = self.client.post(reverse('cadastrar_banco'), dados)
+        mensagens = list(response.wsgi_request._messages)
+        self.assertEqual(mensagens[0].message, 'Conta cadastrada com sucesso')
