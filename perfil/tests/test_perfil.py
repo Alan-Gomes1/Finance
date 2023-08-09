@@ -70,3 +70,18 @@ class TestCadastrarBanco(TestCase):
         response = self.client.post(reverse('cadastrar_banco'), dados)
         mensagens = list(response.wsgi_request._messages)
         self.assertEqual(mensagens[0].message, 'Conta cadastrada com sucesso')
+
+    def test_view_CadastrarBanco_mensagem_de_erro(self):
+        dados = {
+            'nome': '     ',
+            'banco': '    ',
+            'tipo': '',
+            'valor': ''
+        }
+        response = self.client.post(reverse('cadastrar_banco'), dados)
+        mensagens = list(response.wsgi_request._messages)
+        self.assertEqual(mensagens[0].message, 'Preencha todos os campos')
+
+    def test_view_CadastrarBanco_url_esta_correta(self):
+        url = reverse('cadastrar_banco')
+        self.assertEqual(url, '/perfil/cadastrar_banco/')
