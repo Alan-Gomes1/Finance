@@ -53,7 +53,9 @@ class TestCadastrarBanco(TestCase):
         dados = self.dados_banco()
         self.client.post(reverse('cadastrar_banco'), dados)
         conta = Conta.objects.first()
-        self.assertEqual(conta.nome, 'Nome do Banco')
+        self.assertEqual(
+            conta, Conta.objects.filter(nome='Nome do Banco').first()
+        )
 
     def test_view_CadastrarBanco_retorna_status_code_302(self):
         dados = self.dados_banco()
