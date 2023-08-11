@@ -87,3 +87,17 @@ class TestCadastrarBanco(TestCase):
     def test_view_CadastrarBanco_url_esta_correta(self):
         url = reverse('cadastrar_banco')
         self.assertEqual(url, '/perfil/cadastrar_banco/')
+
+
+class TesteDeletarBanco(TestCase):
+    def test_view_DeletarBanco_com_sucesso(self):
+        dados = {
+            'nome': 'Nome do Banco',
+            'banco': 'Banco XYZ',
+            'tipo': 'Tipo A',
+            'valor': 1000,
+        }
+        self.client.post(reverse('cadastrar_banco'), dados)
+        conta = Conta.objects.first()
+        mensagem = self.client.get(f'{reverse("deletar_banco")}/{conta.pk}')
+        self.assertEqual(mensagem, 'Conta deletada com sucesso')
