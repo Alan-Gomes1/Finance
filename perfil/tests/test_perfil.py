@@ -62,7 +62,7 @@ class TestCadastrarBanco(TestCase):
         response = self.client.post(reverse('cadastrar_banco'), dados)
         self.assertEqual(response.status_code, 302)
 
-    def test_view_CadastratBanco_nao_aceita_requisicao_get(self):
+    def test_view_CadastrarBanco_nao_aceita_requisicao_get(self):
         dados = self.dados_banco()
         response = self.client.get(reverse('cadastrar_banco'), dados)
         self.assertEqual(response.status_code, 405)
@@ -90,14 +90,14 @@ class TestCadastrarBanco(TestCase):
 
 
 class TesteDeletarBanco(TestCase):
+    def setUp(self) -> None:
+        self.conta = Conta.objects.create(nome="Test Conta", valor=150)
+
     def test_view_DeletarBanco_com_sucesso(self):
-        dados = {
-            'nome': 'Nome do Banco',
-            'banco': 'Banco XYZ',
-            'tipo': 'Tipo A',
-            'valor': 1000,
-        }
-        self.client.post(reverse('cadastrar_banco'), dados)
-        conta = Conta.objects.first()
-        mensagem = self.client.get(f'{reverse("deletar_banco")}/{conta.pk}')
-        self.assertEqual(mensagem, 'Conta deletada com sucesso')
+        resposta = self.client.get(
+            reverse('deletar_banco', kwargs={"pk": self.conta.pk})
+        )
+        mensagem = list(resposta.wsgi_request._messages)
+        self.assertEqual(
+            mensagem[0].message, "Conta deletada com sucesso"
+        )

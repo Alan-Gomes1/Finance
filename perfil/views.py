@@ -76,8 +76,8 @@ class CadastrarBanco(View):
 
 
 class DeletarBanco(View):
-    def get(self, request, id):
-        conta = get_object_or_404(Conta, id=id)
+    def get(self, request, pk):
+        conta = get_object_or_404(Conta, id=pk)
         conta.delete()
         messages.add_message(
             request, constants.SUCCESS, "Conta deletada com sucesso"
