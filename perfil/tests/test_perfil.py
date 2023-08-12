@@ -92,12 +92,16 @@ class TestCadastrarBanco(TestCase):
 class TesteDeletarBanco(TestCase):
     def setUp(self) -> None:
         self.conta = Conta.objects.create(nome="Test Conta", valor=150)
-
-    def test_view_DeletarBanco_com_sucesso(self):
-        resposta = self.client.get(
+        self.resposta = self.client.get(
             reverse('deletar_banco', kwargs={"pk": self.conta.pk})
         )
-        mensagem = list(resposta.wsgi_request._messages)
+
+    def test_view_DeletarBanco_com_sucesso(self):
+        mensagem = list(self.resposta.wsgi_request._messages)
         self.assertEqual(
             mensagem[0].message, "Conta deletada com sucesso"
         )
+
+    def test_view_DeletarBanco_url_esta_correta(self):
+        url = reverse('deletar_banco', kwargs={"pk": self.conta.pk})
+        self.assertEqual(url, '/perfil/deletar_banco/1')
