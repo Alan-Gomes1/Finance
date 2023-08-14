@@ -105,3 +105,6 @@ class TesteDeletarBanco(TestCase):
     def test_view_DeletarBanco_url_esta_correta(self):
         url = reverse('deletar_banco', kwargs={"pk": self.conta.pk})
         self.assertEqual(url, '/perfil/deletar_banco/1')
+
+    def test_view_DeletarBanco_redireciona(self):
+        self.assertRedirects(self.resposta, reverse("gerenciar"))
