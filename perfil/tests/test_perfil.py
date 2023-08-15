@@ -108,3 +108,6 @@ class TesteDeletarBanco(TestCase):
 
     def test_view_DeletarBanco_redireciona(self):
         self.assertRedirects(self.resposta, reverse("gerenciar"))
+
+    def test_view_DeletarBanco_retorna_status_code_302(self):
+        self.assertEqual(self.resposta.status_code, 302)
