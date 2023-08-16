@@ -111,3 +111,8 @@ class TesteDeletarBanco(TestCase):
 
     def test_view_DeletarBanco_retorna_status_code_302(self):
         self.assertEqual(self.resposta.status_code, 302)
+
+    def test_View_DeletarBanco_conta_existente(self):
+        self.conta.delete()
+        with self.assertRaises(Conta.DoesNotExist):
+            Conta.objects.get(pk=self.conta.pk)
