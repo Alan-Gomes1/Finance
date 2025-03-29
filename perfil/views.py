@@ -6,7 +6,6 @@ from django.contrib.messages import constants
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
@@ -60,7 +59,7 @@ class CadastrarBanco(View):
             messages.add_message(
                 request, constants.ERROR, "Preencha todos os campos"
             )
-            return redirect(reverse("gerenciar"))
+            return redirect("gerenciar")
 
         conta = Conta(
             nome=nome,
@@ -74,7 +73,7 @@ class CadastrarBanco(View):
         messages.add_message(
             request, constants.SUCCESS, "Conta cadastrada com sucesso"
         )
-        return redirect(reverse("gerenciar"))
+        return redirect("gerenciar")
 
 
 class DeletarBanco(View):
@@ -84,7 +83,7 @@ class DeletarBanco(View):
         messages.add_message(
             request, constants.SUCCESS, "Conta deletada com sucesso"
         )
-        return redirect(reverse("gerenciar"))
+        return redirect("gerenciar")
 
 
 class CadastrarCategoria(View):
@@ -101,7 +100,7 @@ class CadastrarCategoria(View):
         messages.add_message(
             request, constants.SUCCESS, "Categoria cadastrada com sucesso"
         )
-        return redirect(reverse("gerenciar"))
+        return redirect("gerenciar")
 
 
 class UpdateCategoria(View):
@@ -109,7 +108,7 @@ class UpdateCategoria(View):
         categoria = get_object_or_404(Categoria, id=id)
         categoria.essencial = not categoria.essencial
         categoria.save()
-        return redirect(reverse("gerenciar"))
+        return redirect("gerenciar")
 
 
 class Dashboard(View):

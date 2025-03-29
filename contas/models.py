@@ -1,9 +1,10 @@
 from django.db import models
 
+from .abstracts import BaseModel
 from perfil.models import Categoria
 
 
-class ContaPagar(models.Model):
+class ContaPagar(BaseModel):
     titulo = models.CharField(max_length=50)
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     descricao = models.TextField()
@@ -14,6 +15,6 @@ class ContaPagar(models.Model):
         return self.titulo
 
 
-class ContaPaga(models.Model):
+class ContaPaga(BaseModel):
     conta = models.ForeignKey(ContaPagar, on_delete=models.DO_NOTHING)
     data_pagamento = models.DateField()

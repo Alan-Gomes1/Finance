@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views import View
 
 from perfil.models import Categoria
@@ -14,8 +13,7 @@ class DefinirContas(View):
     def get(self, request):
         categorias = Categoria.objects.all()
         return render(
-            request, 'definir_contas.html',
-            {'categorias': categorias}
+            request, 'definir_contas.html', {'categorias': categorias}
         )
 
     def post(self, request):
@@ -35,7 +33,7 @@ class DefinirContas(View):
         conta.save()
 
         messages.success(request, 'Conta cadastrada com sucesso')
-        return redirect(reverse('definir_contas'))
+        return redirect('definir_contas')
 
 
 class VerContas(View):

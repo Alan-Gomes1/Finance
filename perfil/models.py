@@ -3,8 +3,10 @@ from datetime import datetime
 from django.db import models
 from django.db.models import Sum
 
+from contas.abstracts import BaseModel
 
-class Categoria(models.Model):
+
+class Categoria(BaseModel):
     categoria = models.CharField(max_length=50)
     essencial = models.BooleanField(default=False)
     valor_planejamento = models.FloatField(default=0)
@@ -28,7 +30,7 @@ class Categoria(models.Model):
         return self.categoria
 
 
-class Conta(models.Model):
+class Conta(BaseModel):
     bancos = (
         ("NU", "Nubank"),
         ("BR", "Bradesco"),

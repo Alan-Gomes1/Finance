@@ -8,9 +8,9 @@ from django.contrib.messages import constants
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.views import View
-from weasyprint import HTML
+
+import pdfkit
 
 from perfil.models import Categoria, Conta
 
@@ -55,7 +55,7 @@ class NovoValor(View):
         messages.add_message(
             request, constants.SUCCESS, "Valor cadastrado com sucesso"
         )
-        return redirect(reverse("novo_valor"))
+        return redirect("novo_valor")
 
 
 class ViewExtrato(View):
@@ -88,7 +88,8 @@ class ExportarPDF(View):
         template = render_to_string(camino_template, {"valores": valores})
 
         path_output = BytesIO()
-        HTML(string=template).write_pdf(path_output)
+        pdfkit.from_string(template, path_output)
+        # HTML(string=template).write_pdf(path_output)
         path_output.seek(0)
 
         return FileResponse(path_output, filename="extrato.pdf")

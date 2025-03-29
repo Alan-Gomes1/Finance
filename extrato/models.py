@@ -1,9 +1,10 @@
 from django.db import models
 
+from contas.abstracts import BaseModel
 from perfil.models import Categoria, Conta
 
 
-class Valores(models.Model):
+class Valores(BaseModel):
     tipos = (
         ('E', 'Entrada'),
         ('S', 'Saída')
