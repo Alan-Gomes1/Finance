@@ -34,7 +34,9 @@ class ListViewBase(ListView):
         contexto['total_entradas'] = calcula_total(self.entradas)
         contexto['total_saidas'] = calcula_total(self.saidas)
         contexto['total_gastos_essenciais'] = int(self.total_essenciais)
-        contexto['total_gastos_nao_essenciais'] = int(self.total_nao_essenciais)  # noqa: E501
+        contexto['total_gastos_nao_essenciais'] = int(
+            self.total_nao_essenciais
+        )
         return contexto
 
 
