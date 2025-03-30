@@ -2,16 +2,22 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants
 
+from environs import Env
+
+
+env = Env()
+env.read_env('.env')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ki^ldsd%xp@t_yg^=pr67pw^spd+(!41s4n#a1a=9l24)m8o&&'
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -126,3 +132,10 @@ MESSAGE_TAGS = {
     constants.SUCCESS: 'alert-success',
     constants.INFO: 'alert-info ',
 }
+
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env.str("CELERY_RESULT_BACKEND")
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ALWAYS_EAGER = False
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
