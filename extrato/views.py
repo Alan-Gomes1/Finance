@@ -13,8 +13,8 @@ from django.views import View
 import pdfkit
 
 from perfil.models import Categoria, Conta
-
 from .models import Valores
+from .tasks import send_email_task
 
 
 class NovoValor(View):
@@ -86,10 +86,15 @@ class ExportarPDF(View):
             settings.BASE_DIR, 'templates/parcial/extrato.html'
         )
         template = render_to_string(camino_template, {"valores": valores})
+        options = {"enable-local-file-access": "", "encoding": "UTF-8"}
+        pdf_buffer = BytesIO()
+        pdf_buffer.write(pdfkit.from_string(template, False, options=options))
+        pdf_buffer.seek(0)
 
-        path_output = BytesIO()
-        pdfkit.from_string(template, path_output)
-        # HTML(string=template).write_pdf(path_output)
-        path_output.seek(0)
+        send_email_task.delay(
+            subject="Extrato",
+            message="Seu extrato foi exportado como pdf com sucesso!",
+            recipient_list=[request.user.email],
+        )
 
-        return FileResponse(path_output, filename="extrato.pdf")
+        return FileResponse(pdf_buffer, filename="extrato.pdf")

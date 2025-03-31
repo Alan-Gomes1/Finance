@@ -8,6 +8,7 @@
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-instalação">Instalação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-licença">Licença</a>
 </p>
 
@@ -55,6 +56,42 @@ O projeto "Finance" foi desenvolvido com foco na simplicidade, usabilidade e seg
 ## 🔖 Layout
 
 Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/file/ymc6wEkOQQtyd4eRBa7ZJ6/psw-7.0-(Copy)?type=design&node-id=0-1&mode=design&t=4LcxuA9SDSoi3RTa-0). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
+
+## ⬇️ Instalação
+1. Clone o projeto
+    ```bash
+    git clone https://github.com/Alan-Gomes1/Finance.git
+    ```
+
+2. Crie um ambiente virtual
+    ```bash
+    python -m venv venv
+    ```
+
+3. Agora ative o ambiente
+    ```bash
+    source/venv/bin/activate
+    ```
+
+4. Instale as dependências
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+5. Se você estiver utilizando linux ou wsl é necessário instalar a dependência `wkhtmltopdf` para a geração de relatórios em pdf
+    ```bash
+    sudo apt-get install wkhtmltopdf
+    ```
+
+6. Gere as migracões
+    ```bash
+    python manage.py migrate
+    ```
+
+7. Finalmente rode o projeto
+    ```bash
+    python manage.py runserver
+    ```
 
 ## :memo: Licença
 
