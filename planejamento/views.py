@@ -1,10 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from perfil.models import Categoria
 
 
-class DefinirPlanejamento(View):
+class DefinirPlanejamento(View, LoginRequiredMixin):
     def get(self, request):
         categorias = Categoria.objects.all()
         return render(
@@ -12,7 +13,7 @@ class DefinirPlanejamento(View):
         )
 
 
-class UpdateValorCategoria(View):
+class UpdateValorCategoria(View, LoginRequiredMixin):
     def post(self, request, id):
         novo_valor = request.POST.get('valor')
         categoria = get_object_or_404(Categoria, id=id)
@@ -22,7 +23,7 @@ class UpdateValorCategoria(View):
         return redirect('definir_planejamento')
 
 
-class VerPlanejamento(View):
+class VerPlanejamento(View, LoginRequiredMixin):
     def get(self, request):
         categorias = Categoria.objects.all()
         return render(

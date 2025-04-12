@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Dict
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import constants
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
@@ -11,8 +12,8 @@ from django.views.generic import ListView
 
 from extrato.models import Valores
 
-from .models import Categoria, Conta
-from .utils import calcula_total, calcula_equilibrio_financeiro
+from ..models import Categoria, Conta
+from ..utils import calcula_total, calcula_equilibrio_financeiro
 
 
 class ListViewBase(ListView):
@@ -39,15 +40,15 @@ class ListViewBase(ListView):
         return contexto
 
 
-class Perfil(ListViewBase):
+class Perfil(LoginRequiredMixin, ListViewBase):
     template_name = "home.html"
 
 
-class Gerenciar(ListViewBase):
+class Gerenciar(LoginRequiredMixin, ListViewBase):
     template_name = "gerenciar.html"
 
 
-class CadastrarBanco(View):
+class CadastrarBanco(LoginRequiredMixin, View):
     def post(self, request):
         nome = request.POST.get("nome")
         banco = request.POST.get("banco")
@@ -76,7 +77,7 @@ class CadastrarBanco(View):
         return redirect("gerenciar")
 
 
-class DeletarBanco(View):
+class DeletarBanco(LoginRequiredMixin, View):
     def get(self, request, pk):
         conta = get_object_or_404(Conta, id=pk)
         conta.delete()
@@ -86,7 +87,7 @@ class DeletarBanco(View):
         return redirect("gerenciar")
 
 
-class CadastrarCategoria(View):
+class CadastrarCategoria(LoginRequiredMixin, View):
     def post(self, request):
         nome = request.POST.get("categoria")
         essencial = bool(request.POST.get("essencial"))
@@ -103,7 +104,7 @@ class CadastrarCategoria(View):
         return redirect("gerenciar")
 
 
-class UpdateCategoria(View):
+class UpdateCategoria(LoginRequiredMixin, View):
     def get(self, request, id):
         categoria = get_object_or_404(Categoria, id=id)
         categoria.essencial = not categoria.essencial
@@ -111,7 +112,7 @@ class UpdateCategoria(View):
         return redirect("gerenciar")
 
 
-class Dashboard(View):
+class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
         dados = {}
         categorias = Categoria.objects.all()
