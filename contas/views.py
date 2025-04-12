@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views import View
 
@@ -9,7 +10,7 @@ from perfil.models import Categoria
 from .models import ContaPagar, ContaPaga
 
 
-class DefinirContas(View):
+class DefinirContas(LoginRequiredMixin, View):
     def get(self, request):
         categorias = Categoria.objects.all()
         return render(
@@ -36,7 +37,7 @@ class DefinirContas(View):
         return redirect('definir_contas')
 
 
-class VerContas(View):
+class VerContas(LoginRequiredMixin, View):
     def get(self, request):
         MES_ATUAL = datetime.now().month
         DIA_ATUAL = datetime.now().day

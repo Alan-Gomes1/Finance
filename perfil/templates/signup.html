@@ -1,0 +1,41 @@
+{% extends "bases/base.html" %}
+
+{% load static %}
+
+{% block 'head' %}
+    <link href="{% static 'geral/css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+<br><br>
+<div class="box-form">
+    <form action="{% url "signup" %}" method="POST" autocomplete="off">
+        {% csrf_token %}
+        <h2>Signup</h2>
+        <div class="inputBox">
+            <input type="text" name="username" required>
+            <span>Username</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="password" name="password" required>
+            <span>Password</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="email" name="email" required>
+            <span>E-mail</span>
+            <i></i>
+        </div>
+        <div class="links">
+            <a href="#">Sign In</a>
+        </div>
+        <input type="submit" value="Signup">
+    </form>
+</div>
+{% endblock %}
