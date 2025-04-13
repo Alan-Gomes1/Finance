@@ -2,22 +2,23 @@ import os
 from datetime import datetime
 from io import BytesIO
 
+import pdfkit
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import View
-
-import pdfkit
+from finance.logger import logger
 
 from perfil.models import Categoria, Conta
 from .models import Valores
 from .tasks import send_email_task
 
 
-class NovoValor(View):
+class NovoValor(LoginRequiredMixin, View):
     def get(self, request):
         contas = Conta.objects.all()
         categorias = Categoria.objects.all()
@@ -58,7 +59,7 @@ class NovoValor(View):
         return redirect("novo_valor")
 
 
-class ViewExtrato(View):
+class ViewExtrato(LoginRequiredMixin, View):
     def get(self, request):
         contas = Conta.objects.all()
         categorias = Categoria.objects.all()
@@ -79,7 +80,7 @@ class ViewExtrato(View):
         )
 
 
-class ExportarPDF(View):
+class ExportarPDF(LoginRequiredMixin, View):
     def get(self, request):
         valores = Valores.objects.filter(data__month=datetime.now().month)
         camino_template = os.path.join(
@@ -96,5 +97,6 @@ class ExportarPDF(View):
             message="Seu extrato foi exportado como pdf com sucesso!",
             recipient_list=[request.user.email],
         )
+        logger.info("Extrato exportado com sucesso!")
 
         return FileResponse(pdf_buffer, filename="extrato.pdf")

@@ -24,6 +24,7 @@ ipython==9.0.2
 ipython_pygments_lexers==1.1.1
 jedi==0.19.2
 kombu==5.5.2
+loguru==0.7.3
 marshmallow==3.26.1
 matplotlib-inline==0.1.7
 packaging==23.1

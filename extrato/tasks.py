@@ -1,6 +1,7 @@
 from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
+from loguru import logger
 
 
 @shared_task
@@ -19,3 +20,7 @@ def send_email_task(subject, message, recipient_list):
         recipient_list=recipient_list,
         fail_silently=False
     )
+
+    logger.bind(
+        assunto=subject, mensagem=message, destinatario=recipient_list
+    ).info("Email enviado com sucesso!")
