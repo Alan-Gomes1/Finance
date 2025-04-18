@@ -1,118 +1,127 @@
-from django.test import TestCase
 from django.urls import reverse
 
 from perfil.models import Conta
+from perfil.tests.conftest import BaseTestCase
 
 
-class TestPerfil(TestCase):
-    def test_view_perfil_carrega_template_home(self):
-        response = self.client.get(reverse('home'))
+class TestProfile(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.url = reverse('home')
+
+    def test_profile_view_loads_home_template(self):
+        response = self.client.get(self.url)
         self.assertTemplateUsed(response, 'home.html')
 
-    def test_view_perfil_retorna_status_code_200(self):
-        response = self.client.get(reverse('home'))
+    def test_profile_view_returns_status_code_200_ok(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-    def test_view_perfil_nao_aceita_requisicao_post(self):
-        response = self.client.post(reverse('home'))
+    def test_profile_view_does_not_accept_post_request(self):
+        response = self.client.post(self.url)
         self.assertEqual(response.status_code, 405)
 
-    def test_view_perfil_url_esta_correta(self):
-        url = reverse('home')
-        self.assertEqual(url, '/perfil/home/')
+    def test_profile_view_url_is_correct(self):
+        self.assertEqual(self.url, '/perfil/home/')
 
 
-class TestGerenciar(TestCase):
-    def test_view_gerenciar_carrega_template_correto(self):
-        response = self.client.get(reverse('gerenciar'))
+class TestManage(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.url = reverse('gerenciar')
+
+    def test_manage_view_loads_manage_template(self):
+        response = self.client.get(self.url)
         self.assertTemplateUsed(response, 'gerenciar.html')
 
-    def test_view_gerenciar_retorna_status_code_200(self):
-        response = self.client.get(reverse('gerenciar'))
+    def test_manage_view_returns_status_code_200_ok(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-    def test_view_gerenciar_nao_aceita_requisicao_post(self):
-        response = self.client.post(reverse('gerenciar'))
+    def test_manage_view_does_not_accept_post_request(self):
+        response = self.client.post(self.url)
         self.assertEqual(response.status_code, 405)
 
-    def test_view_gerenciar_url_esta_correta(self):
-        url = reverse('gerenciar')
-        self.assertEqual(url, '/perfil/gerenciar/')
+    def test_manage_view_url_is_correct(self):
+        self.assertEqual(self.url, '/perfil/gerenciar/')
 
 
-class TestCadastrarBanco(TestCase):
+class TestRegisterBank(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.url = reverse('cadastrar_banco')
+
     def dados_banco(self):
         return {
-            'nome': 'Nome do Banco',
-            'banco': 'Banco XYZ',
-            'tipo': 'Tipo A',
+            'nome': 'Bank Name',
+            'banco': 'Bank XYZ',
+            'tipo': 'Type A',
             'valor': 1000,
         }
 
-    def test_view_CadastrarBanco_com_sucesso(self):
-        dados = self.dados_banco()
-        self.client.post(reverse('cadastrar_banco'), dados)
-        conta = Conta.objects.first()
+    def test_register_bank_successfully(self):
+        data = self.dados_banco()
+        self.client.post(self.url, data)
+        account = Conta.objects.first()
         self.assertEqual(
-            conta, Conta.objects.filter(nome='Nome do Banco').first()
+            account, Conta.objects.filter(nome='Bank Name').first()
         )
 
-    def test_view_CadastrarBanco_retorna_status_code_302(self):
-        dados = self.dados_banco()
-        response = self.client.post(reverse('cadastrar_banco'), dados)
+    def test_register_bank_view_returns_status_code_302_redirect(self):
+        data = self.dados_banco()
+        response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 302)
 
-    def test_view_CadastrarBanco_nao_aceita_requisicao_get(self):
-        dados = self.dados_banco()
-        response = self.client.get(reverse('cadastrar_banco'), dados)
+    def test_register_bank_view_does_not_accept_get_request(self):
+        data = self.dados_banco()
+        response = self.client.get(self.url, data)
         self.assertEqual(response.status_code, 405)
 
-    def test_view_CadastrarBanco_mensagem_de_sucesso(self):
-        dados = self.dados_banco()
-        response = self.client.post(reverse('cadastrar_banco'), dados)
-        mensagens = list(response.wsgi_request._messages)
-        self.assertEqual(mensagens[0].message, 'Conta cadastrada com sucesso')
+    def test_register_bank_view_success_message(self):
+        data = self.dados_banco()
+        response = self.client.post(self.url, data)
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(messages[0].message, 'Conta cadastrada com sucesso')
 
-    def test_view_CadastrarBanco_mensagem_de_erro(self):
-        dados = {
+    def test_register_bank_view_error_message(self):
+        data = {
             'nome': '     ',
             'banco': '    ',
             'tipo': '',
             'valor': ''
         }
-        response = self.client.post(reverse('cadastrar_banco'), dados)
-        mensagens = list(response.wsgi_request._messages)
-        self.assertEqual(mensagens[0].message, 'Preencha todos os campos')
+        response = self.client.post(self.url, data)
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(messages[0].message, 'Preencha todos os campos')
 
-    def test_view_CadastrarBanco_url_esta_correta(self):
-        url = reverse('cadastrar_banco')
-        self.assertEqual(url, '/perfil/cadastrar_banco/')
+    def test_register_bank_view_url_is_correct(self):
+        self.assertEqual(self.url, '/perfil/cadastrar_banco/')
 
 
-class TesteDeletarBanco(TestCase):
+class TestDeleteBank(BaseTestCase):
     def setUp(self) -> None:
-        self.conta = Conta.objects.create(nome="Test Conta", valor=150)
-        self.resposta = self.client.get(
-            reverse('deletar_banco', kwargs={"pk": self.conta.pk})
-        )
+        super().setUp()
+        self.account = Conta.objects.create(nome="Test Account", valor=150)
+        self.url = reverse('deletar_banco', kwargs={"pk": self.account.pk})
+        self.response = self.client.get(self.url)
 
-    def test_view_DeletarBanco_com_sucesso(self):
-        mensagem = list(self.resposta.wsgi_request._messages)
+    def test_delete_bank_view_successfully(self):
+        message = list(self.response.wsgi_request._messages)
         self.assertEqual(
-            mensagem[0].message, "Conta deletada com sucesso"
+            message[0].message, "Conta deletada com sucesso"
         )
 
-    def test_view_DeletarBanco_url_esta_correta(self):
-        url = reverse('deletar_banco', kwargs={"pk": self.conta.pk})
-        self.assertEqual(url, '/perfil/deletar_banco/1')
+    def test_delete_bank_view_url_is_correct(self):
+        self.assertEqual(self.url, '/perfil/deletar_banco/1')
 
-    def test_view_DeletarBanco_redireciona(self):
-        self.assertRedirects(self.resposta, reverse("gerenciar"))
+    def test_delete_bank_view_redirects_to_manage(self):
+        self.assertRedirects(self.response, reverse("gerenciar"))
 
-    def test_view_DeletarBanco_retorna_status_code_302(self):
-        self.assertEqual(self.resposta.status_code, 302)
+    def test_delete_bank_view_returns_status_code_302_redirect(self):
+        self.assertEqual(self.response.status_code, 302)
 
-    def test_View_DeletarBanco_conta_existente(self):
-        self.conta.delete()
+    def test_delete_bank_view_existing_account_is_deleted(self):
+        pk = self.account.pk
+        self.account.delete()
         with self.assertRaises(Conta.DoesNotExist):
-            Conta.objects.get(pk=self.conta.pk)
+            Conta.objects.get(pk=pk)
