@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'extrato',
     'planejamento',
     'contas',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,7 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_ALWAYS_EAGER = False
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
+SUFIX = env.str("SUFIX")
 
 # Email
 EMAIL_BACKEND = env.str("EMAIL_BACKEND")
@@ -155,3 +157,4 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
 TEST_USERNAME = env.str("TEST_USERNAME")
 TEST_PASSWORD = env.str("TEST_PASSWORD")
+SSO_CLIENT_ID = env.str("SSO_CLIENT_ID")

@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
 from ..utils import clean_email, clean_password, clean_username
+from ..tasks import publish_user_event
 
 
 class Login(View):
@@ -42,6 +43,10 @@ class SignUp(View):
                 username=username,
                 password=password,
                 email=email
+            )
+            publish_user_event.delay({"username": username, "email": email})
+            messages.add_message(
+                request, constants.SUCCESS, "Usuário cadastrado com sucesso"
             )
             return redirect('login')
         except ValidationError as err:
