@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'planejamento',
     'contas',
     'django_celery_results',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -44,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'finance.urls'
@@ -158,3 +160,4 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 TEST_USERNAME = env.str("TEST_USERNAME")
 TEST_PASSWORD = env.str("TEST_PASSWORD")
 SSO_CLIENT_ID = env.str("SSO_CLIENT_ID")
+INTERNAL_IPS = env.list("INTERNAL_IPS")

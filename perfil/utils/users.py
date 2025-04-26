@@ -13,11 +13,7 @@ def check_if_user_exists(username: str) -> bool:
     Returns:
         bool: If the user exists
     """
-    try:
-        User.objects.get(username=username)
-        return True
-    except User.DoesNotExist:
-        return False
+    return User.objects.filter(username=username).exists()
 
 
 @logger.catch
@@ -33,10 +29,7 @@ def create_user(username: str, email: str) -> User | None:
         User | None: The created user object
     """
     try:
-        user = User.objects.create_user(
-            username=username,
-            email=email
-        )
+        user = User.objects.create_user(username=username, email=email)
         return user
     except Exception:
         return None
